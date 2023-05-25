@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, getCurrentInstance, h, render, onMounted } from 'vue'
+import { ref, shallowRef, getCurrentInstance, h, render, onMounted, computed } from 'vue'
 import Drawflow from 'drawflow'
 import 'drawflow/dist/drawflow.min.css'
 import EleRegister from './elements/EleRegister.vue'
@@ -66,61 +66,69 @@ const elements = [
 ]
 const editor = shallowRef({})
 const internalInstance = getCurrentInstance()
-internalInstance.appContext.app._context.config.globalProperties.$df = editor;
-const Vue = { version: 3, h, render };
-let mobile_item_selec = '';
-let mobile_last_move = null;
+internalInstance.appContext.app._context.config.globalProperties.$df = editor
+const Vue = { version: 3, h, render }
+let mobile_item_selec = ''
+let mobile_last_move = null
 const drag = (ev) => {
-  if (ev.type === "touchstart") {
-    mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
+  if (ev.type === 'touchstart') {
+    mobile_item_selec = ev.target.closest('.drag-drawflow').getAttribute('data-node')
   } else {
-    ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
+    ev.dataTransfer.setData('node', ev.target.getAttribute('data-node'))
   }
 }
 const drop = (ev) => {
-  if (ev.type === "touchend") {
-    let parentdrawflow = document.elementFromPoint( mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
+  if (ev.type === 'touchend') {
+    let parentdrawflow = document.elementFromPoint( mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow")
     if(parentdrawflow != null) {
-      addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
+      addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY)
     }
-    mobile_item_selec = '';
+    mobile_item_selec = ''
   } else {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("node");
-    addNodeToDrawFlow(data, ev.clientX, ev.clientY);
+    ev.preventDefault()
+    var data = ev.dataTransfer.getData('node')
+    addNodeToDrawFlow(data, ev.clientX, ev.clientY)
   }
 }
 const allowDrop = (ev) => {
-  ev.preventDefault();
+  ev.preventDefault()
 }
 const positionMobile = (ev) => {
-  mobile_last_move = ev;
+  mobile_last_move = ev
 }
 const addNodeToDrawFlow = (name, pos_x, pos_y) => {
-  pos_x = pos_x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)));
-  pos_y = pos_y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)));
-  const eleSelected = elements.find(ele => ele.item == name);
-  editor.value.addNode(name, eleSelected.input, eleSelected.output, pos_x, pos_y, name, {}, name, 'vue');
+  pos_x = pos_x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)))
+  pos_y = pos_y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)))
+  const eleSelected = elements.find(ele => ele.item == name)
+  editor.value.addNode(name, eleSelected.input, eleSelected.output, pos_x, pos_y, name, {}, name, 'vue')
 }
 onMounted(() => {
-  let es = document.getElementsByClassName('drag-drawflow');
+  let es = document.getElementsByClassName('drag-drawflow')
   for (var i = 0; i < es.length; i++) {
-    es[i].addEventListener('touchend', drop, false);
-    es[i].addEventListener('touchmove', positionMobile, false);
-    es[i].addEventListener('touchstart', drag, false);
+    es[i].addEventListener('touchend', drop, false)
+    es[i].addEventListener('touchmove', positionMobile, false)
+    es[i].addEventListener('touchstart', drag, false)
   }
-  const id = document.getElementById("drawflow");
-  editor.value = new Drawflow(id, Vue, internalInstance.appContext.app._context);
-  editor.value.start();
-  editor.value.registerNode('Register', EleRegister, {}, {});
-  editor.value.registerNode('Instruction', EleInstruction, {}, {});
-  editor.value.registerNode('Immediate', EleImmediate, {}, {});
+  const id = document.getElementById('drawflow')
+  editor.value = new Drawflow(id, Vue, internalInstance.appContext.app._context)
+  editor.value.start()
+  editor.value.registerNode('Register', EleRegister, {}, {})
+  editor.value.registerNode('Instruction', EleInstruction, {}, {})
+  editor.value.registerNode('Immediate', EleImmediate, {}, {})
+  editor.value.on('nodeCreated', (id) => {
+    console.log('Node Created', id)
+    // TODO: function after create node
+  })
+  editor.value.on('connectionCreated', (obj) => {
+    console.log('Connection Created', obj)
+    // TODO: function after create connection
+  })
 })
 const dialogVisible = ref(false)
 const dialogData = ref({})
 const showCode = () => {
-  dialogData.value = editor.value.export();
-  dialogVisible.value = true;
+  dialogData.value = editor.value.export()
+  dialogVisible.value = true
 }
 </script>
 
