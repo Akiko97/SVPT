@@ -11,6 +11,9 @@
             <div class="element" :style="`background: ${n.color}`" >{{ n.name }}</div>
           </li>
         </ul>
+        <div class="delimiter"></div>
+        <!-- TODO: Other functions -->
+        <div>TODO: Other functions</div>
       </el-aside>
       <el-main>
         <div id="drawflow" @drop="drop($event)" @dragover="allowDrop($event)"></div>
@@ -169,5 +172,8 @@ const showCode = () => {
   background: #2b2c30;
   background-size: 20px 20px;
   background-image: radial-gradient(#494949 1px, transparent 1px);
+}
+.delimiter {
+  border-bottom: 1px solid #494949;
 }
 </style>

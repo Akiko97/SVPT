@@ -1,6 +1,6 @@
 <template>
   <div class="ele-reg" ref="elr">
-    <EleHeader title="Register"/>
+    <EleHeader title="Register" :id="nodeId"/>
     <el-cascader
       v-model="selectedReg"
       :options="regs"

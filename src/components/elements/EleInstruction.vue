@@ -1,6 +1,6 @@
 <template>
   <div class="ele-inst" ref="eli">
-    <EleHeader title="Instruction"/>
+    <EleHeader title="Instruction" :id="nodeId"/>
     <el-select
       v-model="selectedInst"
       class="m-2"

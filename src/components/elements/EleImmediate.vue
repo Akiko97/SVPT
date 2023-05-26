@@ -1,6 +1,6 @@
 <template>
   <div class="ele-imm" ref="elimm">
-    <EleHeader title="Immediate"/>
+    <EleHeader title="Immediate" :id="nodeId"/>
     <el-input
       v-model="inputValue"
       placeholder="Immediate"

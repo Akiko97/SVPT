@@ -1,6 +1,7 @@
 <template>
   <div class="ele-header">
-    {{ title }}
+    <div>{{ title }}</div>
+    <div>ID: {{ id }}</div>
   </div>
 </template>
 
@@ -11,6 +12,10 @@ defineProps({
     type: String,
     required: true,
   },
+  id: {
+    type: String,
+    required: true,
+  }
 })
 </script>
 
@@ -22,5 +27,7 @@ defineProps({
   margin-right: -15px;
   padding: 10px 15px;
   margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
 }
 </style>
