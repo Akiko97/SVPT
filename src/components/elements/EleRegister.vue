@@ -1,5 +1,5 @@
 <template>
-  <div class="ele-reg" ref="el">
+  <div class="ele-reg" ref="elr">
     <EleHeader title="Register"/>
     <el-cascader
       v-model="selectedReg"
@@ -68,6 +68,8 @@
           :key="index"
           v-model="values[index]"
           @input="changeInput(index)"
+          @blur="completeInput(index)"
+          clearable
         ></el-input>
       </el-drawer>
     </teleport>
@@ -135,36 +137,33 @@ const handleChange = (value) => {
   dataNode.value.data.register = value
   df.updateNodeDataFromId(nodeId.value, dataNode.value)
 }
-const changeSize = (value) => {
-  dataNode.value.data.size = value
+const changeSize = () => {
+  dataNode.value.data.size = nSize
   df.updateNodeDataFromId(nodeId.value, dataNode.value)
 }
 const changeInput = (index) => {
-  if (values.value[index] == '') {
-    values.value[index] = '0'
-  }
+  values.value[index] = values.value[index].replace(/[^0-9.]/g, '')
+}
+const completeInput = (index) => {
+  values.value[index] = +values.value[index]
   dataNode.value.data.values = values.value
   df.updateNodeDataFromId(nodeId.value, dataNode.value)
 }
 const drawer = ref(false)
 const nSize = computed(() => {
-  return size.value === '1' ? 1 :
-    size.value === '2' ? 2 :
-    size.value === '4' ? 4 :
-    size.value === '8' ? 8 :
-    size.value === '16' ? 16 : 0;
+  return +size.value
 })
 const values = ref(new Array(nSize.value).fill(0))
 watch(nSize, (newSize) => {
   values.value = new Array(newSize).fill(0)
 })
-const el = ref(null)
+const elr = ref(null)
 const df = getCurrentInstance().appContext.config.globalProperties.$df.value
 const nodeId = ref(0)
 const dataNode = ref({})
 onMounted(async () => {
   await nextTick()
-  nodeId.value = el.value.parentElement.parentElement.id.slice(5)
+  nodeId.value = elr.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
   if (dataNode.value.data.register) {
     selectedReg.value = dataNode.value.data.register
@@ -174,10 +173,10 @@ onMounted(async () => {
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }
   if (dataNode.value.data.size) {
-    size.value = dataNode.value.data.size
+    size.value = `${dataNode.value.data.size}`
   }
   else {
-    dataNode.value.data.size = size.value
+    dataNode.value.data.size = nSize.value
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }
   if (dataNode.value.data.values) {
