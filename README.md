@@ -7,7 +7,7 @@ SIMD Visual Programming Tool
 Run:
 
 ```shell
-yarn serve
+yarn dev
 ```
 
 Build:
