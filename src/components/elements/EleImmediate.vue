@@ -1,6 +1,6 @@
 <template>
   <div class="ele-imm" ref="elimm">
-    <EleHeader title="Immediate" :id="nodeId"/>
+    <EleHeader title="Immediate" color="#0808ff" :id="`${nodeId}`"/>
     <el-input
       v-model="inputValue"
       placeholder="Immediate"
@@ -8,6 +8,7 @@
       size="small"
       @blur="completeInput"
       clearable
+      df-inputimmvalue
       >
       <template #prepend>
         <el-select
@@ -16,6 +17,7 @@
           size="small"
           style="width: 100px"
           @change="changeType"
+          df-selectimmtype
           >
           <el-option label="Binary" value="0" />
           <el-option label="Octal" value="1" />

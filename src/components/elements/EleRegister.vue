@@ -1,6 +1,6 @@
 <template>
   <div class="ele-reg" ref="elr">
-    <EleHeader title="Register" :id="nodeId"/>
+    <EleHeader title="Register" color="#494949" :id="`${nodeId}`"/>
     <el-cascader
       v-model="selectedReg"
       :options="regs"
@@ -9,6 +9,7 @@
       placeholder="Select"
       size="small"
       style="width: 100%;"
+      df-selectreg
     />
     <el-row>
       <el-col v-if="nSize == 1" :span="24" style="text-align: center;">{{ values[0] }}</el-col>
@@ -55,7 +56,7 @@
         direction="rtl"
         >
         <p>Size:</p>
-        <el-radio-group v-model="size" @change="changeSize">
+        <el-radio-group v-model="size" @change="changeSize" :disabled="disableSelect" df-selectsize>
           <el-radio label="1">1</el-radio>
           <el-radio label="2">2</el-radio>
           <el-radio label="4">4</el-radio>
@@ -70,6 +71,9 @@
           @input="changeInput(index)"
           @blur="completeInput(index)"
           clearable
+          style="margin-bottom: 10px;"
+          :disabled="disableInput"
+          df-inputregvalue
         ></el-input>
       </el-drawer>
     </teleport>
@@ -157,6 +161,8 @@ const values = ref(new Array(nSize.value).fill(0))
 watch(nSize, (newSize) => {
   values.value = new Array(newSize).fill(0)
 })
+const disableInput = ref(false)
+const disableSelect = ref(false)
 const elr = ref(null)
 const df = getCurrentInstance().appContext.config.globalProperties.$df.value
 const nodeId = ref(0)
@@ -186,6 +192,22 @@ onMounted(async () => {
     dataNode.value.data.values = values.value
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }
+  if (dataNode.value.inputs.input_1.connections.length !== 0) {
+    disableInput.value = true
+    disableSelect.value = true
+  }
+  df.on('connectionCreated', (obj) => {
+    if (obj.input_id === nodeId.value && obj.input_class === 'input_1') {
+      disableInput.value = true
+      disableSelect.value = true
+    }
+  })
+  df.on('connectionRemoved', (obj) => {
+    if (obj.input_id === nodeId.value && obj.input_class === 'input_1') {
+      disableInput.value = false
+      disableSelect.value = false
+    }
+  })
 })
 </script>
 

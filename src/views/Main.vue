@@ -5,7 +5,13 @@
 </template>
 
 <script setup>
+import { defineComponent } from 'vue'
 import Canvas from '../components/Canvas.vue'
+defineComponent({
+    components: {
+      Canvas
+    }
+})
 </script>
 
 <style scoped>

@@ -12,11 +12,15 @@
           </li>
         </ul>
         <div class="delimiter"></div>
-        <!-- TODO: Other functions -->
-        <div>TODO: Other functions</div>
+        <Tools/>
       </el-aside>
       <el-main>
-        <div id="drawflow" @drop="drop($event)" @dragover="allowDrop($event)"></div>
+        <div
+          id="drawflow"
+          @drop="drop($event)"
+          @dragover="allowDrop($event)"
+          >
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -38,12 +42,19 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, getCurrentInstance, h, render, onMounted, computed } from 'vue'
+import { ref, shallowRef, getCurrentInstance, h, render, onMounted, defineComponent } from 'vue'
 import Drawflow from 'drawflow'
 import 'drawflow/dist/drawflow.min.css'
+import '../dfStyle.css'
 import EleRegister from './elements/EleRegister.vue'
 import EleInstruction from './elements/EleInstruction.vue'
 import EleImmediate from './elements/EleImmediate.vue'
+import Tools from './Tools.vue'
+defineComponent({
+    components: {
+      Tools
+    }
+})
 const elements = [
   {
     name: 'Register',
@@ -121,15 +132,24 @@ onMounted(() => {
   editor.value.on('nodeCreated', (id) => {
     console.log('Node Created', id)
     // TODO: function after create node
+    // ?
   })
   editor.value.on('connectionCreated', (obj) => {
     console.log('Connection Created', obj)
     // TODO: function after create connection
+    // Calculating/ErrorFinding/...
+  })
+  editor.value.on('nodeDataChanged', (obj) => {
+    console.log('Node Data Changed', obj)
+    // TODO: function after change node data
+    // Calculating/ErrorFinding/...
   })
 })
 const dialogVisible = ref(false)
 const dialogData = ref({})
 const showCode = () => {
+  // TODO: show real code
+  // Debug message
   dialogData.value = editor.value.export()
   dialogVisible.value = true
 }
@@ -159,7 +179,7 @@ const showCode = () => {
   border-radius: 8px;
   border: 2px solid #494949;
   display: block;
-  height:60px;
+  height:40px;
   line-height:40px;
   padding: 10px;
   margin: 10px 0px;

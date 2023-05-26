@@ -1,5 +1,5 @@
 <template>
-  <div class="ele-header">
+  <div class="ele-header" :style="`background: ${color};`">
     <div>{{ title }}</div>
     <div>ID: {{ id }}</div>
   </div>
@@ -12,6 +12,10 @@ defineProps({
     type: String,
     required: true,
   },
+  color: {
+    type: String,
+    required: true,
+  },
   id: {
     type: String,
     required: true,
@@ -21,13 +25,14 @@ defineProps({
 
 <style scoped>
 .ele-header {
-  background: #494949;
-  margin-top: -15px;
-  margin-left: -15px;
-  margin-right: -15px;
+  margin-top: -16px;
+  margin-left: -16px;
+  margin-right: -16px;
   padding: 10px 15px;
   margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 </style>

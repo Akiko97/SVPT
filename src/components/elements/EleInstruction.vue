@@ -1,12 +1,14 @@
 <template>
   <div class="ele-inst" ref="eli">
-    <EleHeader title="Instruction" :id="nodeId"/>
+    <EleHeader title="Instruction" color="#ff9900" :id="`${nodeId}`"/>
     <el-select
       v-model="selectedInst"
       class="m-2"
       placeholder="Select"
       size="small"
-      @change="changeInst">
+      @change="changeInst"
+      df-selectinst
+      >
       <el-option
         v-for="inst in insts"
         :key="inst.name"
@@ -14,6 +16,8 @@
         :value="inst.name"
         />
     </el-select>
+    <!-- TODO: Confirm the order of the input registers -->
+    <div>TODO: Confirm the order of the input registers</div>
   </div>
 </template>
 
