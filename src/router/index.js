@@ -7,6 +7,11 @@ const routes = [
     component: () => import('../views/Main.vue')
   },
   {
+    path: '/reference',
+    name: 'reference',
+    component: () => import('../views/Reference.vue')
+  },
+  {
     path: '/about',
     name: 'about',
     component: () => import('../views/About.vue')

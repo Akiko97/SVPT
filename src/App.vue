@@ -4,6 +4,7 @@
       <h2>SVPT</h2>
       <nav>
         <router-link to="/">Main</router-link> |
+        <router-link to="/reference">Reference</router-link> |
         <router-link to="/about">About</router-link>
       </nav>
     </el-header>

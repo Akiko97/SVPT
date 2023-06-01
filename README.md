@@ -22,6 +22,12 @@ yarn build
 * [Drawflow](https://github.com/jerosoler/Drawflow)
 * [drawflow-vue3-example](https://github.com/jerosoler/drawflow-vue3-example)
 
+## Build a new project
+
+```shell
+yarn create vite 'svpt' --template vue
+```
+
 ## Memo
 
 在 Drawflow 库中，你可以监听以下事件：

@@ -20,20 +20,81 @@
         </el-row>
       </template>
       <template #footer>
-        <div class="dfooter" style="flex: auto">
+        <div class="drawer-footer" style="flex: auto">
           <el-button @click="drawer = false">Cancel</el-button>
-          <el-button type="primary" @click="setupWatcher">Setup</el-button>
+          <el-button type="primary" @click="dialogVisible = true">Setup</el-button>
         </div>
       </template>
     </el-drawer>
+    <el-dialog
+      v-model="dialogVisible"
+      title="Code"
+      width="80%"
+    >
+      <div style="text-align: center">
+        <el-transfer
+          v-model="watching"
+          :data="registers"
+          filterable
+          :filter-method="filterMethod"
+          filter-placeholder="Search Register"
+          :titles="['Registers', 'Watching']"
+          @change="handleChange"
+        />
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 const drawer = ref(false)
-const setupWatcher = () => {
-  //
+const dialogVisible = ref(false)
+const registers = ref([
+  {
+    key: 'XMM0',
+    label: 'XMM0',
+    disabled: false,
+  },
+  {
+    key: 'XMM1',
+    label: 'XMM1',
+    disabled: false,
+  },
+  {
+    key: 'YMM0',
+    label: 'YMM0',
+    disabled: false,
+  },
+  {
+    key: 'YMM1',
+    label: 'YMM1',
+    disabled: false,
+  },
+  {
+    key: 'ZMM0',
+    label: 'ZMM0',
+    disabled: false,
+  },
+  {
+    key: 'ZMM1',
+    label: 'ZMM1',
+    disabled: false,
+  },
+])
+const watching = ref([])
+const filterMethod = (query, item) => {
+  return item.label.toLowerCase().includes(query.toLowerCase())
+}
+const handleChange = () => {
+  // handle change
+  console.log('Selected watching register changed', watching.value)
 }
 </script>
 
@@ -41,7 +102,7 @@ const setupWatcher = () => {
 .tools {
   margin: 20px;
 }
-.tools .el-button:not(.dfooter .el-button) {
+.tools .el-button:not(.drawer-footer .el-button):not(.dialog-footer .el-button) {
   display: block;
   width: 100%;
 }
