@@ -157,12 +157,38 @@ const filterData = computed(() => {
         if (intrinsics[i].name.toLowerCase().includes(text.toLowerCase())) {
           return true
         }
+        if ('instruction' in intrinsics[i] && intrinsics[i].instruction.toLowerCase().includes(text.toLowerCase())) {
+          return true
+        }
+      }
+      return false
+    }
+    const check_table = (table, text) => {
+      for (let i = 0; i < table.length; i++) {
+        if (table[i].type == 'table') {
+          const tableItems = table[i].value.items
+          for (let j = 0; j < tableItems.length; j++) {
+            if ('instruction' in tableItems) {
+              if (tableItems.instruction.split(' ')[0].toLowerCase().includes(text.toLowerCase())) {
+                return true
+              }
+            }
+            else if ('opcodeinstruction' in tableItems) {
+              const regex = /(?<=\/r\s)(.*?)(?=\s)/
+              match = tableItems.opcodeinstruction.match(regex)
+              if (match && match[0].toLowerCase().includes(text.toLowerCase())) {
+                return true
+              }
+            }
+          }
+        }
       }
       return false
     }
     return !search.value ||
       data.mnemonic.toLowerCase().includes(search.value.toLowerCase()) ||
-      ('intrinsics' in data && check_intrinsics(data.intrinsics, search.value))
+      ('intrinsics' in data && check_intrinsics(data.intrinsics, search.value)) ||
+      ('table' in data && check_table(data.table, search.value))
   })
 })
 const showInstructionDetails = ref(false)
