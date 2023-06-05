@@ -46,7 +46,11 @@
       <el-col v-if="nSize == 16" :span="3" style="text-align: center;">{{ values[14] }}</el-col>
       <el-col v-if="nSize == 16" :span="3" style="text-align: center;">{{ values[15] }}</el-col>
     </el-row>
-    <el-button type="primary" @click="drawer = true" style="margin-top: 10px;">
+    <el-button
+      type="primary"
+      @click="drawer = true"
+      size="small"
+      style="margin-top: 10px;">
       Setup
     </el-button>
     <teleport to="body">

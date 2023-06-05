@@ -74,15 +74,15 @@
                   <pre v-for="(info, i) in item.other_infos" :key="i"><code>{{ info }}</code></pre>
                   <p>Set: {{ item.set }}</p>
                   <p>Flags: <span v-for="(flag, i) in item.flags" :key="i">{{ flag }}</span></p>
-                  <div v-if="'description' in item">
+                  <div v-if="'description' in item && item.description != ''">
                     <h3>Description</h3>
                     <p>{{ item.description }}</p>
                   </div>
-                  <div v-if="'operation' in item">
+                  <div v-if="'operation' in item && item.operation != ''">
                     <h3>Operation</h3>
                     <pre><code>{{ item.operation }}</code></pre>
                   </div>
-                  <div v-if="'performance' in item">
+                  <div v-if="'performance' in item && item.performance != ''">
                     <h3>Latency and Throughput</h3>
                     <div v-html="item.performance"></div>
                   </div>
@@ -119,6 +119,7 @@
               size="small"
               placeholder="Type to search"
               style="width: 200px;"
+              clearable
             />
           </div>
         </template>
@@ -168,14 +169,14 @@ const filterData = computed(() => {
         if (table[i].type == 'table') {
           const tableItems = table[i].value.items
           for (let j = 0; j < tableItems.length; j++) {
-            if ('instruction' in tableItems) {
-              if (tableItems.instruction.split(' ')[0].toLowerCase().includes(text.toLowerCase())) {
+            if ('instruction' in tableItems[j]) {
+              if (tableItems[j].instruction.split(' ')[0].toLowerCase().includes(text.toLowerCase())) {
                 return true
               }
             }
-            else if ('opcodeinstruction' in tableItems) {
+            else if ('opcodeinstruction' in tableItems[j]) {
               const regex = /(?<=\/r\s)(.*?)(?=\s)/
-              match = tableItems.opcodeinstruction.match(regex)
+              const match = tableItems[j].opcodeinstruction.match(regex)
               if (match && match[0].toLowerCase().includes(text.toLowerCase())) {
                 return true
               }
