@@ -1,6 +1,9 @@
 <template>
   <div class="tools">
-    <el-button type="success">Run</el-button>
+    <div class="run-tool">
+      <el-button type="success">Run</el-button>
+      <el-button type="primary" :icon="Setting" style="width: 25%;"/>
+    </div>
     <br>
     <el-button type="primary" @click="drawer = true">Watcher</el-button>
     <el-drawer
@@ -49,45 +52,29 @@
         </span>
       </template>
     </el-dialog>
+    <!-- TODO: setting -->
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { Setting } from '@element-plus/icons-vue'
+import { regs } from '../data/registers'
 const drawer = ref(false)
 const dialogVisible = ref(false)
-const registers = ref([
-  {
-    key: 'XMM0',
-    label: 'XMM0',
-    disabled: false,
-  },
-  {
-    key: 'XMM1',
-    label: 'XMM1',
-    disabled: false,
-  },
-  {
-    key: 'YMM0',
-    label: 'YMM0',
-    disabled: false,
-  },
-  {
-    key: 'YMM1',
-    label: 'YMM1',
-    disabled: false,
-  },
-  {
-    key: 'ZMM0',
-    label: 'ZMM0',
-    disabled: false,
-  },
-  {
-    key: 'ZMM1',
-    label: 'ZMM1',
-    disabled: false,
-  },
-])
+const registers = computed(() => {
+  const list = []
+  for (const group in regs) {
+    for (const reg in regs[group].children) {
+      list.push({
+        key: regs[group].children[reg].value,
+        label: regs[group].children[reg].label,
+        disabled: false,
+      })
+    }
+  }
+  return list
+})
 const watching = ref([])
 const filterMethod = (query, item) => {
   return item.label.toLowerCase().includes(query.toLowerCase())
@@ -101,6 +88,9 @@ const handleChange = () => {
 <style scoped>
 .tools {
   margin: 20px;
+}
+.run-tool {
+  display: flex;
 }
 .tools .el-button:not(.drawer-footer .el-button):not(.dialog-footer .el-button) {
   display: block;

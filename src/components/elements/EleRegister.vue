@@ -9,6 +9,7 @@
       placeholder="Select"
       size="small"
       style="width: 100%;"
+      :show-all-levels="false"
       df-selectreg
     />
     <el-row>
@@ -46,7 +47,24 @@
       <el-col v-if="nSize == 16" :span="3" style="text-align: center;">{{ values[14] }}</el-col>
       <el-col v-if="nSize == 16" :span="3" style="text-align: center;">{{ values[15] }}</el-col>
     </el-row>
+    <div style="text-align: center;">
+      <el-link
+        v-if="!showDetails"
+        :underline="false"
+        @click="showDetails = !showDetails"
+      >
+        <el-icon><ArrowDown /></el-icon>
+      </el-link>
+      <el-link
+        v-if="showDetails"
+        :underline="false"
+        @click="showDetails = !showDetails"
+      >
+        <el-icon><ArrowUp /></el-icon>
+      </el-link>
+    </div>
     <el-button
+      v-if="showDetails"
       type="primary"
       @click="drawer = true"
       size="small"
@@ -58,7 +76,7 @@
         v-model="drawer"
         title="Setup Register"
         direction="rtl"
-        >
+      >
         <p>Size:</p>
         <el-radio-group v-model="size" @change="changeSize" :disabled="disableSelect" df-selectsize>
           <el-radio label="1">1</el-radio>
@@ -87,6 +105,7 @@
 <script setup>
 import { defineComponent, ref, computed, watch, onMounted, getCurrentInstance, nextTick } from 'vue'
 import EleHeader from './EleHeader.vue'
+import { regs } from '../../data/registers'
 defineComponent({
   components: {
     EleHeader
@@ -97,50 +116,6 @@ const props = {
 }
 const selectedReg = ref([])
 const size = ref('8')
-const regs = [
-  {
-    value: 'XMM',
-    label: 'XMM',
-    children: [
-      {
-        value: 'XMM0',
-        label: 'XMM0',
-      },
-      {
-        value: 'XMM1',
-        label: 'XMM1',
-      },
-    ]
-  },
-  {
-    value: 'YMM',
-    label: 'YMM',
-    children: [
-      {
-        value: 'YMM0',
-        label: 'YMM0',
-      },
-      {
-        value: 'YMM1',
-        label: 'YMM1',
-      },
-    ]
-  },
-  {
-    value: 'ZMM',
-    label: 'ZMM',
-    children: [
-      {
-        value: 'ZMM0',
-        label: 'ZMM0',
-      },
-      {
-        value: 'ZMM1',
-        label: 'ZMM1',
-      },
-    ]
-  },
-]
 const handleChange = (value) => {
   dataNode.value.data.register = value
   df.updateNodeDataFromId(nodeId.value, dataNode.value)
@@ -213,6 +188,7 @@ onMounted(async () => {
     }
   })
 })
+const showDetails = ref(false)
 </script>
 
 <style scoped>

@@ -49,6 +49,9 @@ import '../dfStyle.css'
 import EleRegister from './elements/EleRegister.vue'
 import EleInstruction from './elements/EleInstruction.vue'
 import EleImmediate from './elements/EleImmediate.vue'
+import EleControlflow from './elements/EleControlflow.vue'
+import EleLabel from './elements/EleLabel.vue'
+import EleMemory from './elements/EleMemory.vue'
 import Tools from './Tools.vue'
 defineComponent({
     components: {
@@ -60,6 +63,13 @@ const elements = [
     name: 'Register',
     color: '#49494970',
     item: 'Register',
+    input: 1,
+    output: 1,
+  },
+  {
+    name: 'Memory',
+    color: '#e3e3e370',
+    item: 'Memory',
     input: 1,
     output: 1,
   },
@@ -76,6 +86,20 @@ const elements = [
     item: 'Immediate',
     input: 0,
     output: 1,
+  },
+  {
+    name: 'Label',
+    color: '#008000',
+    item: 'Label',
+    input: 1,
+    output: 1,
+  },
+  {
+    name: 'Controlflow',
+    color: '#ff0808',
+    item: 'Controlflow',
+    input: 1,
+    output: 2,
   },
 ]
 const editor = shallowRef({})
@@ -129,6 +153,9 @@ onMounted(() => {
   editor.value.registerNode('Register', EleRegister, {}, {})
   editor.value.registerNode('Instruction', EleInstruction, {}, {})
   editor.value.registerNode('Immediate', EleImmediate, {}, {})
+  editor.value.registerNode('Controlflow', EleControlflow, {}, {})
+  editor.value.registerNode('Label', EleLabel, {}, {})
+  editor.value.registerNode('Memory', EleMemory, {}, {})
   editor.value.on('nodeCreated', (id) => {
     console.log('Node Created', id)
     // TODO: function after create node
@@ -152,6 +179,7 @@ const showCode = () => {
   // Debug message
   dialogData.value = editor.value.export()
   dialogVisible.value = true
+  console.log(editor.value.drawflow.drawflow.Home.data)
 }
 </script>
 

@@ -86,3 +86,6 @@ button:focus-visible {
 .el-drawer__close-btn {
   width: 50px;
 }
+p {
+  color: #ffffff;
+}

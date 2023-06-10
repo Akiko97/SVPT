@@ -19,10 +19,10 @@
           @change="changeType"
           df-selectimmtype
           >
-          <el-option label="Binary" value="0" />
-          <el-option label="Octal" value="1" />
-          <el-option label="Decimal" value="2" />
-          <el-option label="Hexadecimal" value="3" />
+          <el-option label="Binary" value="Binary" />
+          <el-option label="Octal" value="Octal" />
+          <el-option label="Decimal" value="Decimal" />
+          <el-option label="Hexadecimal" value="Hexadecimal" />
         </el-select>
       </template>
     </el-input>
@@ -39,18 +39,6 @@ defineComponent({
 })
 const inputValue = ref('')
 const type = ref('')
-const typeName = computed(() => {
-  return type.value === '0' ? 'binary' :
-  type.value === '1' ? 'octal' :
-  type.value === '2' ? 'decimal' :
-  type.value === '3' ? 'hexadecimal' : ''
-})
-const toType = (name) => {
-  return name === 'binary' ? '0' :
-    name === 'octal' ? '1' :
-    name === 'decimal' ? '2' :
-    name === 'hexadecimal' ? '3' : ''
-}
 const elimm = ref(null)
 const df = getCurrentInstance().appContext.config.globalProperties.$df.value
 const nodeId = ref(0)
@@ -60,10 +48,10 @@ onMounted(async () => {
   nodeId.value = elimm.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
   if (dataNode.value.data.type) {
-    type.value = toType(dataNode.value.data.type)
+    type.value = dataNode.value.data.type
   }
   else {
-    dataNode.value.data.type = typeName.value
+    dataNode.value.data.type = type.value
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }
   if (dataNode.value.data.value) {
@@ -75,7 +63,7 @@ onMounted(async () => {
   }
 })
 const changeType = () => {
-  dataNode.value.data.type = typeName.value
+  dataNode.value.data.type = type.value
   df.updateNodeDataFromId(nodeId.value, dataNode.value)
 }
 const completeInput = () => {
