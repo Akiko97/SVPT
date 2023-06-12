@@ -156,6 +156,56 @@ onMounted(() => {
   editor.value.registerNode('Controlflow', EleControlflow, {}, {})
   editor.value.registerNode('Label', EleLabel, {}, {})
   editor.value.registerNode('Memory', EleMemory, {}, {})
+  // editor.value.import({
+  //   "drawflow": {
+  //     "Home": {
+  //       "data": {
+  //         "1": {
+  //           "id": 1,
+  //           "name": "Label",
+  //           "data": {
+  //             "id": 1,
+  //             "name": "Label",
+  //             "data": {
+  //               "label": "start"
+  //             },
+  //             "class": "Label",
+  //             "html": "Label",
+  //             "typenode": "vue",
+  //             "inputs": {
+  //               "input_1": {
+  //                 "connections": []
+  //               }
+  //             },
+  //             "outputs": {
+  //               "output_1": {
+  //                 "connections": []
+  //               }
+  //             },
+  //             "pos_x": 145,
+  //             "pos_y": 88,
+  //             "inputlabelvalue": "start"
+  //           },
+  //           "class": "Label",
+  //           "html": "Label",
+  //           "typenode": "vue",
+  //           "inputs": {
+  //             "input_1": {
+  //               "connections": []
+  //             }
+  //           },
+  //           "outputs": {
+  //             "output_1": {
+  //               "connections": []
+  //             }
+  //           },
+  //           "pos_x": 46,
+  //           "pos_y": 28
+  //         }
+  //       }
+  //     }
+  //   }
+  // })
   editor.value.on('nodeCreated', (id) => {
     console.log('Node Created', id)
     // TODO: function after create node
