@@ -81,8 +81,8 @@ onMounted(async () => {
   await nextTick()
   nodeId.value = elm.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
-  if (dataNode.value.data.mem) {
-    mem.value = dataNode.value.data.mem
+  if (dataNode.value.data.id == nodeId.value) {
+    mem.value = dataNode.value.data.data.mem
   }
   else {
     dataNode.value.data.mem = mem.value

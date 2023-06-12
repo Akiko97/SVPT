@@ -47,17 +47,12 @@ onMounted(async () => {
   await nextTick()
   nodeId.value = elimm.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
-  if (dataNode.value.data.type) {
-    type.value = dataNode.value.data.type
+  if (dataNode.value.data.id == nodeId.value) {
+    type.value = dataNode.value.data.data.type
+    inputValue.value = dataNode.value.data.data.value
   }
   else {
     dataNode.value.data.type = type.value
-    df.updateNodeDataFromId(nodeId.value, dataNode.value)
-  }
-  if (dataNode.value.data.value) {
-    inputValue.value = dataNode.value.data.value
-  }
-  else {
     dataNode.value.data.value = inputValue.value
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }

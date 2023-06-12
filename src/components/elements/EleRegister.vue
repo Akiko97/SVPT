@@ -150,24 +150,14 @@ onMounted(async () => {
   await nextTick()
   nodeId.value = elr.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
-  if (dataNode.value.data.register) {
+  if (dataNode.value.data.id == nodeId.value) {
     selectedReg.value = dataNode.value.data.register
+    size.value = `${dataNode.value.data.data.size}`
+    values.value = dataNode.value.data.data.values
   }
   else {
     dataNode.value.data.register = selectedReg.value
-    df.updateNodeDataFromId(nodeId.value, dataNode.value)
-  }
-  if (dataNode.value.data.size) {
-    size.value = `${dataNode.value.data.size}`
-  }
-  else {
     dataNode.value.data.size = nSize.value
-    df.updateNodeDataFromId(nodeId.value, dataNode.value)
-  }
-  if (dataNode.value.data.values) {
-    values.value = dataNode.value.data.values
-  }
-  else {
     dataNode.value.data.values = values.value
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }

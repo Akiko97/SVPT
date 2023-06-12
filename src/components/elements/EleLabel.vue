@@ -29,8 +29,9 @@ onMounted(async () => {
   await nextTick()
   nodeId.value = ell.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
-  if (dataNode.value.data.label) {
-    inputValue.value = dataNode.value.data.label
+  console.log(dataNode.value.data.id)
+  if (dataNode.value.data.id == nodeId.value) {
+    inputValue.value = dataNode.value.data.data.label
   }
   else {
     dataNode.value.data.label = inputValue.value

@@ -87,17 +87,12 @@ onMounted(async () => {
   await nextTick()
   nodeId.value = eli.value.parentElement.parentElement.id.slice(5)
   dataNode.value = df.getNodeFromId(nodeId.value)
-  if (dataNode.value.data.instruction) {
-    selectedInst.value = dataNode.value.data.instruction
+  if (dataNode.value.data.id == nodeId.value) {
+    selectedInst.value = dataNode.value.data.data.instruction
+    orderedOprand.value = dataNode.value.data.data.order
   }
   else {
     dataNode.value.data.instruction = selectedInst.value
-    df.updateNodeDataFromId(nodeId.value, dataNode.value)
-  }
-  if (dataNode.value.data.order) {
-    orderedOprand.value = dataNode.value.data.order
-  }
-  else {
     dataNode.value.data.order = orderedOprand.value
     df.updateNodeDataFromId(nodeId.value, dataNode.value)
   }
